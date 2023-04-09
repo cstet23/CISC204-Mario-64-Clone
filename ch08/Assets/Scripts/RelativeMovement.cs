@@ -21,6 +21,7 @@ public class RelativeMovement : MonoBehaviour {
 	public float minFall = -1.5f;
 
 	private float vertSpeed;
+	private bool running = false;
 	private ControllerColliderHit contact;
 
 	private CharacterController charController;
@@ -42,6 +43,14 @@ public class RelativeMovement : MonoBehaviour {
 
 		float horInput = Input.GetAxis("Horizontal");
 		float vertInput = Input.GetAxis("Vertical");
+		if (Input.GetKeyDown(KeyCode.LeftShift) && !running) { 
+            moveSpeed *= 2; 
+            running = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftShift) && running) {
+            moveSpeed /= 2;
+            running = false;
+        }
 		if (horInput != 0 || vertInput != 0) {
 
 			// x z movement transformed relative to target
