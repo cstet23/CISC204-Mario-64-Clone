@@ -652,7 +652,6 @@ GameObject:
   - component: {fileID: 2072084866534901980}
   - component: {fileID: 2072084866543937306}
   - component: {fileID: 2072084866943391120}
-  - component: {fileID: 2072084866943391133}
   - component: {fileID: 227238605435291174}
   m_Layer: 0
   m_Name: mini
@@ -717,27 +716,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2072084866943391133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2072084866534544572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 130322393e9dc42f39a77186e4dd9dfe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 2072084866534901980}
-  moveSpeed: 6
-  rotSpeed: 15
-  jumpSpeed: 15
-  puntSpeed: 200
-  gravity: -9.8
-  terminalVelocity: -20
-  minFall: -1.5
-  punted: 0
 --- !u!65 &227238605435291174
 BoxCollider:
   m_ObjectHideFlags: 0
