@@ -15,7 +15,7 @@ public class SpawnController : MonoBehaviour
         if (button.isActive && !spawned) {
             spawned = true;
             mini = Instantiate(miniPrefab) as GameObject;
-            mini.transform.position = new Vector3(0, 1, 13);
+            mini.transform.position = new Vector3(Random.Range(-5.0f, 5.0f), 1, 13);
         }
     }
 }

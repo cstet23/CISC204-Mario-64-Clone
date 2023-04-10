@@ -12,15 +12,25 @@ public class MiniScript : MonoBehaviour
 	public float moveSpeed = 6.0f;
 	public float rotSpeed = 15.0f;
 	public float jumpSpeed = 15.0f;
+	public float puntSpeed = 20.0f;
 	public float gravity = -9.8f;
 	public float terminalVelocity = -20.0f;
 	public float minFall = -1.5f;
+	public bool punted = false;
 
 	private float vertSpeed;
 	private ControllerColliderHit contact;
 
 	private CharacterController charController;
 	private Animator animator;
+
+	void OnTriggerEnter(Collider other) {
+		if (other.CompareTag("Player")) punted = true;
+	}
+
+	void OnTriggerExit(Collider other) {
+		if (other.CompareTag("Player")) punted = false;
+	}
 
 	// Use this for initialization
 	void Start() {
@@ -68,6 +78,10 @@ public class MiniScript : MonoBehaviour
 		if (hitGround) {
 			if (Input.GetButtonDown("Jump")) {
 				vertSpeed = jumpSpeed;
+			} else if (punted) {
+				animator.SetBool("Punted", true);
+				punted = false;
+				vertSpeed = puntSpeed;
 			} else {
 				vertSpeed = minFall;
 				animator.SetBool("Jumping", false);
