@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WanderingAIScript : MonoBehaviour
+public class WanderingAI : MonoBehaviour
 {
     public float speed = 3.0f;
 	public float obstacleRange = 5.0f;

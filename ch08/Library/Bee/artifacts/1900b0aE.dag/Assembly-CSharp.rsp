@@ -330,12 +330,15 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.VSCode.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
+"Assets/Scripts/FieldOfView.cs"
+"Assets/Scripts/FieldOfViewEditor.cs"
 "Assets/Scripts/FOVscript.cs"
 "Assets/Scripts/MiniScript.cs"
 "Assets/Scripts/OrbitCamera.cs"
 "Assets/Scripts/RelativeMovement.cs"
 "Assets/Scripts/SpawnButton.cs"
 "Assets/Scripts/SpawnController.cs"
+"Assets/Scripts/WanderingAI.cs"
 -langversion:9.0
 
 /deterministic

@@ -8,13 +8,14 @@ using UnityEngine;
 public class MiniScript : MonoBehaviour
 {
     [SerializeField] Transform target;
-	
+	public float speed = 3.0f;
 	public float moveSpeed = 6.0f;
 	public float rotSpeed = 15.0f;
 	public float jumpSpeed = 15.0f;
 	public float puntSpeed = 20.0f;
 	public float gravity = -9.8f;
 	public float terminalVelocity = -20.0f;
+	public float obstacleRange = 5.0f;
 	public float minFall = -1.5f;
 	public bool punted = false;
 
@@ -46,7 +47,7 @@ public class MiniScript : MonoBehaviour
 		// start with zero and add movement components progressively
 		Vector3 movement = Vector3.zero;
 
-		float horInput = Input.GetAxis("Horizontal");
+		/*float horInput = Input.GetAxis("Horizontal");
 		float vertInput = Input.GetAxis("Vertical");
 		if (horInput != 0 || vertInput != 0) {
 
@@ -62,12 +63,20 @@ public class MiniScript : MonoBehaviour
 			Quaternion direction = Quaternion.LookRotation(movement);
 			transform.rotation = Quaternion.Lerp(transform.rotation,
 			                                     direction, rotSpeed * Time.deltaTime);
+		}*/
+		transform.Translate(0, 0, speed * Time.deltaTime);	
+		Ray ray = new Ray(transform.position, transform.forward);
+		RaycastHit hit;
+		if (Physics.SphereCast(ray, 0.75f, out hit)) {
+			if (hit.distance < obstacleRange) {
+				float angle = Random.Range(-110, 110);
+				transform.Rotate(0, angle, 0);
+			}
 		}
 		animator.SetFloat("Speed", movement.sqrMagnitude);
 
 		// raycast down to address steep slopes and dropoff edge
 		bool hitGround = false;
-		RaycastHit hit;
 		if (vertSpeed < 0 && Physics.Raycast(transform.position, Vector3.down, out hit)) {
 			float check = (charController.height + charController.radius) / 1.9f;
 			hitGround = hit.distance <= check;	// to be sure check slightly beyond bottom of capsule
@@ -75,7 +84,7 @@ public class MiniScript : MonoBehaviour
 
 		// y movement: possibly jump impulse up, always accel down
 		// could _charController.isGrounded instead, but then cannot workaround dropoff edge
-		if (hitGround) {
+		/*if (hitGround) {
 			if (Input.GetButtonDown("Jump")) {
 				vertSpeed = jumpSpeed;
 			} else if (punted) {
@@ -103,7 +112,7 @@ public class MiniScript : MonoBehaviour
 					movement += contact.normal * moveSpeed;
 				}
 			}
-		}
+		}*/
 		movement.y = vertSpeed;
 
 		movement *= Time.deltaTime;
