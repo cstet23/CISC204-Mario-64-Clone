@@ -12,12 +12,17 @@ public class MiniScript : MonoBehaviour
 	public float moveSpeed = 6.0f;
 	public float rotSpeed = 15.0f;
 	public float jumpSpeed = 15.0f;
-	public float puntSpeed = 20.0f;
+	public float puntSpeed = 60.0f;
 	public float gravity = -9.8f;
 	public float terminalVelocity = -20.0f;
-	public float obstacleRange = 5.0f;
+	public float playerRange = 10.0f;
+	public float obstacleRange = 1.0f;
 	public float minFall = -1.5f;
 	public bool punted = false;
+	public bool runAway = false;
+
+	public float moveX = 0.0f;
+	public float moveZ = -1.0f;
 
 	private float vertSpeed;
 	private ControllerColliderHit contact;
@@ -45,7 +50,7 @@ public class MiniScript : MonoBehaviour
 	void Update() {
 
 		// start with zero and add movement components progressively
-		Vector3 movement = Vector3.zero;
+		//Vector3 movement = Vector3.zero;
 
 		/*float horInput = Input.GetAxis("Horizontal");
 		float vertInput = Input.GetAxis("Vertical");
@@ -58,21 +63,35 @@ public class MiniScript : MonoBehaviour
 			movement *= moveSpeed;
 			movement = Vector3.ClampMagnitude(movement, moveSpeed);
 
-			// face movement direction
-			//transform.rotation = Quaternion.LookRotation(movement); // to face immediately
-			Quaternion direction = Quaternion.LookRotation(movement);
-			transform.rotation = Quaternion.Lerp(transform.rotation,
-			                                     direction, rotSpeed * Time.deltaTime);
-		}*/
-		transform.Translate(0, 0, speed * Time.deltaTime);	
+			// face movement direction*/
 		Ray ray = new Ray(transform.position, transform.forward);
 		RaycastHit hit;
 		if (Physics.SphereCast(ray, 0.75f, out hit)) {
 			if (hit.distance < obstacleRange) {
-				float angle = Random.Range(-110, 110);
-				transform.Rotate(0, angle, 0);
+				runAway = hit.transform.CompareTag("Player");
+				/*float angle = Random.Range(-110, 110);
+				transform.Rotate(0, angle, 0);*/
+				moveX = Random.Range(-1.0f, 1.0f);
+				moveZ = Random.Range(-1.0f, 1.0f);
+			}
+			 else if (hit.distance < playerRange && !runAway) {
+					runAway = hit.transform.CompareTag("Player");
+					if (runAway) {
+						moveX = Random.Range(-1.0f, 1.0f);
+						moveZ = Random.Range(-1.0f, 1.0f);
+					}
 			}
 		}
+		Vector3 movement = new Vector3(moveX, 0, moveZ);
+		Vector3.Normalize(movement);
+		if(runAway) movement = movement * 12;
+			transform.rotation = Quaternion.LookRotation(movement); // to face immediately
+			Quaternion direction = Quaternion.LookRotation(movement);
+			transform.rotation = Quaternion.Lerp(transform.rotation,
+			                                     direction, rotSpeed * Time.deltaTime);/*
+		}*/
+		//transform.Translate(0, 0, speed * Time.deltaTime);	
+		
 		animator.SetFloat("Speed", movement.sqrMagnitude);
 
 		// raycast down to address steep slopes and dropoff edge
@@ -84,15 +103,16 @@ public class MiniScript : MonoBehaviour
 
 		// y movement: possibly jump impulse up, always accel down
 		// could _charController.isGrounded instead, but then cannot workaround dropoff edge
-		/*if (hitGround) {
-			if (Input.GetButtonDown("Jump")) {
+		if (hitGround) {
+			animator.SetBool("Punted", false);
+			/*if (Input.GetButtonDown("Jump")) {
 				vertSpeed = jumpSpeed;
-			} else if (punted) {
+			} else */if (punted) {
 				animator.SetBool("Punted", true);
 				punted = false;
 				vertSpeed = puntSpeed;
 			} else {
-				vertSpeed = minFall;
+				//vertSpeed = minFall;
 				animator.SetBool("Jumping", false);
 			}
 		} else {
@@ -103,16 +123,16 @@ public class MiniScript : MonoBehaviour
 			if (contact != null ) {	// not right at level start
 				animator.SetBool("Jumping", true);
 			}
-
+			
 			// workaround for standing on dropoff edge
-			if (charController.isGrounded) {
+			/*if (charController.isGrounded) {
 				if (Vector3.Dot(movement, contact.normal) < 0) {
 					movement = contact.normal * moveSpeed;
 				} else {
 					movement += contact.normal * moveSpeed;
 				}
-			}
-		}*/
+			}*/
+		}
 		movement.y = vertSpeed;
 
 		movement *= Time.deltaTime;

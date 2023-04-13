@@ -16,7 +16,7 @@ public class WanderingAI : MonoBehaviour
 
 	void Update() {
 		Vector3 movement = Vector3.zero;
-		transform.Translate(0, 0, speed * Time.deltaTime);	
+		//transform.Translate(0, 0, speed * Time.deltaTime);	
 		Ray ray = new Ray(transform.position, transform.forward);
 		RaycastHit hit;
 		if (Physics.SphereCast(ray, 0.75f, out hit)) {
@@ -33,6 +33,7 @@ public class WanderingAI : MonoBehaviour
 		}
 		movement *= Time.deltaTime;
 		charController.Move(movement);
+		animator.SetFloat("Speed", movement.sqrMagnitude);
 	}
 
 }
